@@ -10,3 +10,7 @@ spring:
         native:
           searchLocations: file:///${GIT_REPO}
 
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+

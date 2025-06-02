@@ -37,6 +37,8 @@ logging:
           chat:
             client:
               advisor: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
 ---
 spring:
   config:

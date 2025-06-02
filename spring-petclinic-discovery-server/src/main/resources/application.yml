@@ -11,6 +11,8 @@ logging:
       springframework:
         boot: INFO
         web: INFO
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
 
 ---
 spring:
