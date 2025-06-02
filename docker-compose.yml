@@ -149,6 +149,10 @@ services:
           memory: 256M
     ports:
     - 3030:3030
+    depends_on:
+      - prometheus-server
+      - loki
+      - tracing-server
 
   prometheus-server:
     build: ./docker/prometheus
@@ -159,3 +163,25 @@ services:
           memory: 256M
     ports:
     - 9091:9090
+    
+  loki:
+    build: ./docker/loki
+    container_name: loki
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    ports:
+    - 3100:3100
+    
+  promtail:
+    build: ./docker/promtail
+    container_name: promtail
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    volumes:
+      - /var/log:/var/log
+    depends_on:
+      - loki
