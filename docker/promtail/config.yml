@@ -9,13 +9,14 @@ clients:
   - url: http://loki:3100/loki/api/v1/push
 
 scrape_configs:
-  - job_name: containers
+  # Windows container logs
+  - job_name: windows-containers
     static_configs:
     - targets:
         - localhost
       labels:
-        job: docker
-        __path__: /var/log/containers/*.log
+        job: windows
+        __path__: C:/ProgramData/Docker/containers/*/*-json.log
 
   - job_name: api-gateway
     static_configs:
@@ -23,7 +24,7 @@ scrape_configs:
         - localhost
       labels:
         job: api-gateway
-        __path__: /var/log/spring-petclinic/api-gateway.log
+        __path__: C:/logs/spring-petclinic/api-gateway.log
 
   - job_name: customers-service
     static_configs:
@@ -31,7 +32,7 @@ scrape_configs:
         - localhost
       labels:
         job: customers-service
-        __path__: /var/log/spring-petclinic/customers-service.log
+        __path__: C:/logs/spring-petclinic/customers-service.log
 
   - job_name: visits-service
     static_configs:
@@ -39,7 +40,7 @@ scrape_configs:
         - localhost
       labels:
         job: visits-service
-        __path__: /var/log/spring-petclinic/visits-service.log
+        __path__: C:/logs/spring-petclinic/visits-service.log
 
   - job_name: vets-service
     static_configs:
@@ -47,4 +48,4 @@ scrape_configs:
         - localhost
       labels:
         job: vets-service
-        __path__: /var/log/spring-petclinic/vets-service.log
+        __path__: C:/logs/spring-petclinic/vets-service.log

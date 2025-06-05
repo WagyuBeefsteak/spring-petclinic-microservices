@@ -2,10 +2,19 @@
 
 echo "Starting Spring Petclinic Microservices Monitoring Stack..."
 
-# Ensure log directories exist
-if [ ! -d "/var/log/spring-petclinic" ]; then
-  echo "Creating log directories..."
-  ./scripts/setup-logs.sh
+# Check if running on Windows
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
+  # Windows system
+  echo "Windows system detected. Setting up logs..."
+  powershell -ExecutionPolicy Bypass -File "./scripts/setup-logs-windows.ps1"
+else
+  # Unix-like system
+  echo "Unix-like system detected. Setting up logs..."
+  # Ensure log directories exist
+  if [ ! -d "/var/log/spring-petclinic" ]; then
+    echo "Creating log directories..."
+    ./scripts/setup-logs.sh
+  fi
 fi
 
 # Start the services with docker-compose
