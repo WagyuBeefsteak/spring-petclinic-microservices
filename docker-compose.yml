@@ -1,6 +1,8 @@
+version: '3.8'
+
 services:
   config-server:
-    image: springcommunity/spring-petclinic-config-server
+    image: thainhat104/spring-petclinic-config-server
     container_name: config-server
     deploy:
       resources:
@@ -15,7 +17,7 @@ services:
      - 8888:8888
 
   discovery-server:
-    image: springcommunity/spring-petclinic-discovery-server
+    image: thainhat104/spring-petclinic-discovery-server
     container_name: discovery-server
     deploy:
       resources:
@@ -33,7 +35,7 @@ services:
      - 8761:8761
 
   customers-service:
-    image: springcommunity/spring-petclinic-customers-service
+    image: thainhat104/spring-petclinic-customers-service
     container_name: customers-service
     deploy:
       resources:
@@ -48,7 +50,7 @@ services:
     - 8081:8081
 
   visits-service:
-    image: springcommunity/spring-petclinic-visits-service
+    image: thainhat104/spring-petclinic-visits-service
     container_name: visits-service
     deploy:
       resources:
@@ -63,7 +65,7 @@ services:
      - 8082:8082
 
   vets-service:
-    image: springcommunity/spring-petclinic-vets-service
+    image: thainhat104/spring-petclinic-vets-service
     container_name: vets-service
     deploy:
       resources:
@@ -79,7 +81,7 @@ services:
 
 
   genai-service:
-    image: springcommunity/spring-petclinic-genai-service
+    image: thainhat104/spring-petclinic-genai-service
     container_name: genai-service
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
@@ -99,7 +101,7 @@ services:
 
 
   api-gateway:
-    image: springcommunity/spring-petclinic-api-gateway
+    image: thainhat104/spring-petclinic-api-gateway
     container_name: api-gateway
     deploy:
       resources:
@@ -124,7 +126,7 @@ services:
      - 9411:9411
 
   admin-server:
-    image: springcommunity/spring-petclinic-admin-server
+    image: thainhat104/spring-petclinic-admin-server
     container_name: admin-server
     deploy:
       resources:
@@ -159,3 +161,29 @@ services:
           memory: 256M
     ports:
     - 9091:9090
+
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/loki-config.yaml
+    volumes:
+      - ./loki-config.yaml:/etc/loki/loki-config.yaml
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    volumes:
+      - ./grafana-provisioning/:/etc/grafana/provisioning/
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus-server
+      - loki
+
+volumes:
+  grafana_data:

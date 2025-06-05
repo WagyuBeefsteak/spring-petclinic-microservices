@@ -1,0 +1,10 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: "prometheus-server"
+    static_configs:
+      - targets: ["prometheus-server:9090"]
+  - job_name: "admin-server"
+    static_configs:
+      - targets: ["admin-server:9090"]
