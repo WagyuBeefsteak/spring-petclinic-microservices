@@ -167,6 +167,7 @@ services:
   loki:
     build: ./docker/loki
     container_name: loki
+    privileged: true
     deploy:
       resources:
         limits:
