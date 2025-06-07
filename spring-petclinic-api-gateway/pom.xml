@@ -153,6 +153,7 @@
             <version>${squareup-okhttp3.version}</version>
             <scope>test</scope>
         </dependency>
+       
     </dependencies>
 
     <profiles>
