@@ -8,16 +8,16 @@ mkdir -p logs/spring-petclinic
 
 # Dọn dẹp containers cũ
 echo "Dọn dẹp containers cũ..."
-docker-compose down -v
+docker compose down -v
 
 # Build lại images
 echo "Building images..."
 mvn clean package -DskipTests
-docker-compose build
+docker compose build
 
 # Khởi động hệ thống
 echo "Khởi động hệ thống..."
-docker-compose up -d
+docker compose up -d
 
 # Chờ hệ thống khởi động
 echo "Chờ hệ thống khởi động..."
@@ -25,7 +25,7 @@ sleep 30
 
 # Kiểm tra trạng thái
 echo "Kiểm tra trạng thái services:"
-docker-compose ps
+docker compose ps
 
 echo "=== TRUY CẬP HỆ THỐNG ==="
 echo "Petclinic UI: http://localhost:8080"
