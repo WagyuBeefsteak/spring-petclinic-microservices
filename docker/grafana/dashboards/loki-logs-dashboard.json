@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -13,13 +16,16 @@
     ]
   },
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
-      "datasource": "Loki",
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
       "gridPos": {
         "h": 8,
         "w": 24,
@@ -39,6 +45,10 @@
       },
       "targets": [
         {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
           "expr": "{job=~\".+\"}",
           "refId": "A"
         }
@@ -47,7 +57,10 @@
       "type": "logs"
     },
     {
-      "datasource": "Loki",
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
       "gridPos": {
         "h": 8,
         "w": 12,
@@ -67,7 +80,13 @@
       },
       "targets": [
         {
-          "expr": "{job=\"api-gateway\"}",
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{service_name=\"docker-logs\"} |= \"api-gateway\"",
+          "queryType": "range",
           "refId": "A"
         }
       ],
@@ -75,7 +94,10 @@
       "type": "logs"
     },
     {
-      "datasource": "Loki",
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
       "gridPos": {
         "h": 8,
         "w": 12,
@@ -95,8 +117,80 @@
       },
       "targets": [
         {
-          "expr": "{job=~\"customers-service|visits-service|vets-service\"}",
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{service_name=\"docker-logs\"} |= \"customers-service\"",
+          "queryType": "range",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{service_name=\"docker-logs\"} |= \"discovery-server\"",
+          "hide": false,
+          "queryType": "range",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{service_name=\"docker-logs\"} |= \"vets-service\"",
+          "hide": false,
+          "queryType": "range",
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{service_name=\"docker-logs\"} |= \"visits-service\"",
+          "hide": false,
+          "queryType": "range",
+          "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{service_name=\"docker-logs\"} |= \"genai-service\"",
+          "hide": false,
+          "queryType": "range",
+          "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{service_name=\"docker-logs\"} |= \"admin-server\"",
+          "hide": false,
+          "queryType": "range",
+          "refId": "F"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{service_name=\"docker-logs\"} |= \"config-server\"",
+          "hide": false,
+          "queryType": "range",
+          "refId": "G"
         }
       ],
       "title": "Microservices Logs",
@@ -104,7 +198,7 @@
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 27,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -118,5 +212,6 @@
   "timezone": "",
   "title": "Loki Logs Dashboard",
   "uid": "loki-logs",
-  "version": 1
+  "version": 2,
+  "weekStart": ""
 }
