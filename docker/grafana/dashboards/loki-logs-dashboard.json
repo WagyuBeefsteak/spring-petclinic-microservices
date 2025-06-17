@@ -22,10 +22,7 @@
   "liveNow": false,
   "panels": [
     {
-      "datasource": {
-        "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
-      },
+      "datasource": "Loki",
       "gridPos": {
         "h": 8,
         "w": 24,
@@ -45,10 +42,7 @@
       },
       "targets": [
         {
-          "datasource": {
-            "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
-          },
+          "datasource": "Loki",
           "expr": "{job=~\".+\"}",
           "refId": "A"
         }
@@ -57,10 +51,7 @@
       "type": "logs"
     },
     {
-      "datasource": {
-        "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
-      },
+      "datasource": "Loki",
       "gridPos": {
         "h": 8,
         "w": 12,
@@ -80,10 +71,7 @@
       },
       "targets": [
         {
-          "datasource": {
-            "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
-          },
+          "datasource": "Loki",
           "editorMode": "code",
           "expr": "{service_name=\"docker-logs\"} |= \"api-gateway\"",
           "queryType": "range",
@@ -94,10 +82,7 @@
       "type": "logs"
     },
     {
-      "datasource": {
-        "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
-      },
+      "datasource": "Loki",
       "gridPos": {
         "h": 8,
         "w": 12,
@@ -117,20 +102,14 @@
       },
       "targets": [
         {
-          "datasource": {
-            "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
-          },
+          "datasource": "Loki",
           "editorMode": "code",
           "expr": "{service_name=\"docker-logs\"} |= \"customers-service\"",
           "queryType": "range",
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
-          },
+          "datasource": "Loki",
           "editorMode": "code",
           "expr": "{service_name=\"docker-logs\"} |= \"discovery-server\"",
           "hide": false,
@@ -138,10 +117,7 @@
           "refId": "B"
         },
         {
-          "datasource": {
-            "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
-          },
+          "datasource": "Loki",
           "editorMode": "code",
           "expr": "{service_name=\"docker-logs\"} |= \"vets-service\"",
           "hide": false,
@@ -149,10 +125,7 @@
           "refId": "C"
         },
         {
-          "datasource": {
-            "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
-          },
+          "datasource": "Loki",
           "editorMode": "code",
           "expr": "{service_name=\"docker-logs\"} |= \"visits-service\"",
           "hide": false,
@@ -160,10 +133,7 @@
           "refId": "D"
         },
         {
-          "datasource": {
-            "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
-          },
+          "datasource": "Loki",
           "editorMode": "code",
           "expr": "{service_name=\"docker-logs\"} |= \"genai-service\"",
           "hide": false,
@@ -171,10 +141,7 @@
           "refId": "E"
         },
         {
-          "datasource": {
-            "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
-          },
+          "datasource": "Loki",
           "editorMode": "code",
           "expr": "{service_name=\"docker-logs\"} |= \"admin-server\"",
           "hide": false,
@@ -182,10 +149,7 @@
           "refId": "F"
         },
         {
-          "datasource": {
-            "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
-          },
+          "datasource": "Loki",
           "editorMode": "code",
           "expr": "{service_name=\"docker-logs\"} |= \"config-server\"",
           "hide": false,
