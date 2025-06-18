@@ -9,7 +9,7 @@ clients:
   - url: http://loki:3100/loki/api/v1/push
 
 scrape_configs:
-  # Thu thập logs từ Docker containers
+  # Thu thập logs từ Docker containers với proper service labeling
   - job_name: docker-containers
     docker_sd_configs:
       - host: unix:///var/run/docker.sock
@@ -18,129 +18,91 @@ scrape_configs:
           - name: label
             values: ["logging=promtail"]
     relabel_configs:
+      # Lấy container name
       - source_labels: ["__meta_docker_container_name"]
         regex: "/?(.*)"
         target_label: "container_name"
+
+      # Lấy container ID (12 ký tự đầu)
       - source_labels: ["__meta_docker_container_id"]
         regex: "(.{12})"
         target_label: "container_id"
+
+      # Lấy service name từ docker compose service label
       - source_labels:
           ["__meta_docker_container_label_com_docker_compose_service"]
         target_label: "service"
+
+      # Lấy service name từ custom label service.name nếu có
+      - source_labels: ["__meta_docker_container_label_service_name"]
+        target_label: "service_name"
+        regex: "(.+)"
+
+      # Nếu không có service_name custom label, sử dụng compose service name
+      - source_labels: ["service_name"]
+        target_label: "service_name"
+        regex: "^$"
+        replacement: "${1}"
+      - source_labels: ["service"]
+        target_label: "service_name"
+        regex: "(.+)"
+
     pipeline_stages:
+      # Xử lý JSON logs từ Docker
       - json:
           expressions:
             output: log
             stream: stream
             timestamp: time
+
+      # Parse Spring Boot logs format
+      - regex:
+          expression: '^(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3})\s+(?P<level>\w+)\s+(?P<logger>\S+)\s+-\s+(?P<message>.*)'
+
+      # Tạo labels từ parsed data
+      - labels:
+          level:
+          logger:
+
+      # Xử lý timestamp
       - timestamp:
-          format: RFC3339
           source: timestamp
+          format: "2006-01-02 15:04:05.000"
+
+      # Output final log message
       - output:
           source: output
 
-  # Logs cho từng service cụ thể (file-based)
-  - job_name: api-gateway-logs
+  # File-based logs backup (chỉ cho trường hợp Docker logs không hoạt động)
+  - job_name: file-logs-backup
     static_configs:
       - targets:
           - localhost
         labels:
-          job: api-gateway
-          service: api-gateway
-          __path__: /logs/spring-petclinic/api-gateway*.log
+          job: file-logs
+          __path__: /logs/spring-petclinic/*.log
     pipeline_stages:
+      # Xử lý multiline logs (Java stack traces)
       - multiline:
           firstline: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
           max_wait_time: 3s
-      - regex:
-          expression: '^(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3})\s+(?P<level>\w+)\s+(?P<logger>\S+)\s+-\s+(?P<message>.*)'
-      - timestamp:
-          source: timestamp
-          format: "2006-01-02 15:04:05.000"
-      - labels:
-          level:
-          logger:
 
-  - job_name: customers-service-logs
-    static_configs:
-      - targets:
-          - localhost
-        labels:
-          job: customers-service
-          service: customers-service
-          __path__: /logs/spring-petclinic/customers-service*.log
-    pipeline_stages:
-      - multiline:
-          firstline: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
-          max_wait_time: 3s
+      # Parse log format
       - regex:
           expression: '^(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3})\s+(?P<level>\w+)\s+(?P<logger>\S+)\s+-\s+(?P<message>.*)'
-      - timestamp:
-          source: timestamp
-          format: "2006-01-02 15:04:05.000"
-      - labels:
-          level:
-          logger:
 
-  - job_name: visits-service-logs
-    static_configs:
-      - targets:
-          - localhost
-        labels:
-          job: visits-service
-          service: visits-service
-          __path__: /logs/spring-petclinic/visits-service*.log
-    pipeline_stages:
-      - multiline:
-          firstline: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
-          max_wait_time: 3s
+      # Extract service name from filename
       - regex:
-          expression: '^(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3})\s+(?P<level>\w+)\s+(?P<logger>\S+)\s+-\s+(?P<message>.*)'
-      - timestamp:
-          source: timestamp
-          format: "2006-01-02 15:04:05.000"
-      - labels:
-          level:
-          logger:
+          source: filename
+          expression: '/logs/spring-petclinic/(?P<service_name>.*?)(-\d+)?\.log'
 
-  - job_name: vets-service-logs
-    static_configs:
-      - targets:
-          - localhost
-        labels:
-          job: vets-service
-          service: vets-service
-          __path__: /logs/spring-petclinic/vets-service*.log
-    pipeline_stages:
-      - multiline:
-          firstline: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
-          max_wait_time: 3s
-      - regex:
-          expression: '^(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3})\s+(?P<level>\w+)\s+(?P<logger>\S+)\s+-\s+(?P<message>.*)'
-      - timestamp:
-          source: timestamp
-          format: "2006-01-02 15:04:05.000"
+      # Set labels
       - labels:
           level:
           logger:
+          service_name:
 
-  - job_name: genai-service-logs
-    static_configs:
-      - targets:
-          - localhost
-        labels:
-          job: genai-service
-          service: genai-service
-          __path__: /logs/spring-petclinic/genai-service*.log
-    pipeline_stages:
-      - multiline:
-          firstline: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
-          max_wait_time: 3s
-      - regex:
-          expression: '^(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3})\s+(?P<level>\w+)\s+(?P<logger>\S+)\s+-\s+(?P<message>.*)'
+      # Set timestamp
       - timestamp:
           source: timestamp
           format: "2006-01-02 15:04:05.000"
-      - labels:
-          level:
-          logger:
