@@ -274,7 +274,7 @@ services:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./logs:/logs:ro
-      - ./promtail.yml:/etc/promtail/config.yml:ro
+      - ./docker/promtail/config.yml:/etc/promtail/config.yml:ro
     depends_on:
       - loki
     labels:
