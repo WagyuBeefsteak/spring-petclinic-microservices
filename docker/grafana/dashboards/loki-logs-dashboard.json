@@ -43,7 +43,9 @@
       "targets": [
         {
           "datasource": "Loki",
-          "expr": "{job=~\".+\"}",
+          "editorMode": "code",
+          "expr": "{container_name=~\".+\"}",
+          "queryType": "range",
           "refId": "A"
         }
       ],
@@ -72,8 +74,8 @@
       "targets": [
         {
           "datasource": "Loki",
-          "editorMode": "code",
-          "expr": "{service_name=\"docker-logs\"} |= \"api-gateway\"",
+          "editorMode": "builder",
+          "expr": "{service_name=\"api-gateway\"}",
           "queryType": "range",
           "refId": "A"
         }
@@ -103,55 +105,55 @@
       "targets": [
         {
           "datasource": "Loki",
-          "editorMode": "code",
-          "expr": "{service_name=\"docker-logs\"} |= \"customers-service\"",
+          "editorMode": "builder",
+          "expr": "{service_name=\"admin-server\"}",
           "queryType": "range",
           "refId": "A"
         },
         {
           "datasource": "Loki",
-          "editorMode": "code",
-          "expr": "{service_name=\"docker-logs\"} |= \"discovery-server\"",
+          "editorMode": "builder",
+          "expr": "{service_name=\"config-server\"}",
           "hide": false,
           "queryType": "range",
           "refId": "B"
         },
         {
           "datasource": "Loki",
-          "editorMode": "code",
-          "expr": "{service_name=\"docker-logs\"} |= \"vets-service\"",
+          "editorMode": "builder",
+          "expr": "{service_name=\"customers-service\"}",
           "hide": false,
           "queryType": "range",
           "refId": "C"
         },
         {
           "datasource": "Loki",
-          "editorMode": "code",
-          "expr": "{service_name=\"docker-logs\"} |= \"visits-service\"",
+          "editorMode": "builder",
+          "expr": "{service_name=\"discovery-server\"}",
           "hide": false,
           "queryType": "range",
           "refId": "D"
         },
         {
           "datasource": "Loki",
-          "editorMode": "code",
-          "expr": "{service_name=\"docker-logs\"} |= \"genai-service\"",
+          "editorMode": "builder",
+          "expr": "{service_name=\"genai-service\"}",
           "hide": false,
           "queryType": "range",
           "refId": "E"
         },
         {
           "datasource": "Loki",
-          "editorMode": "code",
-          "expr": "{service_name=\"docker-logs\"} |= \"admin-server\"",
+          "editorMode": "builder",
+          "expr": "{service_name=\"vets-service\"}",
           "hide": false,
           "queryType": "range",
           "refId": "F"
         },
         {
           "datasource": "Loki",
-          "editorMode": "code",
-          "expr": "{service_name=\"docker-logs\"} |= \"config-server\"",
+          "editorMode": "builder",
+          "expr": "{service_name=\"visits-service\"}",
           "hide": false,
           "queryType": "range",
           "refId": "G"
@@ -169,7 +171,7 @@
     "list": []
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
