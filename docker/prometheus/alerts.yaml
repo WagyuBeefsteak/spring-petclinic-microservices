@@ -2,10 +2,9 @@ groups:
   - name: error-alerts
     rules:
       - alert: HighErrorRate
-        expr: rate(http_server_requests_seconds_count{status=~"5.."}[30s]) > 10
-        for: 30s
+        expr: increase(http_server_requests_seconds_count{status=~"[45].."}[30s]) > 10
         labels:
           severity: warning
         annotations:
-          summary: "Số lượng lỗi HTTP 5xx cao"
-          description: "Có hơn 10 lỗi HTTP trong 30s."
+          summary: "Số lượng lỗi HTTP 4xx/5xx cao"
+          description: "Có hơn 10 lỗi HTTP 4xx hoặc 5xx trong 30s."
