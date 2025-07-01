@@ -1,22 +1,12 @@
 apiVersion: 1
 
 providers:
-- name: 'Metrics'
-  orgId: 1
-  folder: 'Metrics'
-  type: file
-  disableDeletion: false
-  updateIntervalSeconds: 10 #how often Grafana will scan for changed dashboards
-  options:
-    path: /var/lib/grafana/dashboards
-    foldersFromFilesStructure: false
-
-- name: 'Logs'
-  orgId: 1
-  folder: 'Logs'
-  type: file
-  disableDeletion: false
-  updateIntervalSeconds: 10 #how often Grafana will scan for changed dashboards
-  options:
-    path: /var/lib/grafana/dashboards
-    foldersFromFilesStructure: false
+  - name: "metric"
+    orgId: 1
+    folder: "metric"
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10 #how often Grafana will scan for changed dashboards
+    options:
+      path: /var/lib/grafana/dashboards
+      foldersFromFilesStructure: false
