@@ -15,22 +15,22 @@ spec:
         app: genai-service
     spec:
       containers:
-      - name: genai-service
-        image: springcommunity/spring-petclinic-genai-service:latest
-        ports:
-        - containerPort: 8084
-        env:
-        - name: SPRING_PROFILES_ACTIVE
-          value: kubernetes
-        - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-          value: http://discovery-server:8761/eureka/
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "100m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
+        - name: genai-service
+          image: springcommunity/spring-petclinic-genai-service:latest
+          ports:
+            - containerPort: 8084
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kubernetes
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://discovery-server:8761/eureka/
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
 ---
 # genai-service-service.yaml
 apiVersion: v1
@@ -42,7 +42,8 @@ spec:
   selector:
     app: genai-service
   ports:
-  - port: 8084
-    targetPort: 8084
+    - port: 8084
+      targetPort: 8084
   type: ClusterIP
 ---
+

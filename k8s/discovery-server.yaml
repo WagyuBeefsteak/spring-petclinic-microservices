@@ -16,17 +16,17 @@ spec:
         app: discovery-server
     spec:
       containers:
-      - name: discovery-server
-        image: springcommunity/spring-petclinic-discovery-server:latest
-        ports:
-        - containerPort: 8761
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "100m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
+        - name: discovery-server
+          image: springcommunity/spring-petclinic-discovery-server:latest
+          ports:
+            - containerPort: 8761
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
 ---
 # discovery-server-service.yaml
 apiVersion: v1
@@ -38,7 +38,8 @@ spec:
   selector:
     app: discovery-server
   ports:
-  - port: 8761
-    targetPort: 8761
+    - port: 8761
+      targetPort: 8761
   type: ClusterIP
 ---
+
