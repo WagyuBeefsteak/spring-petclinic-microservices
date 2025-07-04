@@ -13,7 +13,7 @@ pipeline {
 
     environment {
         IMAGE_REPO = 'thainhat104/spring-petclinic'
-        GIT_REPO = 'https://github.com/thainhat04/spring-petclinic-microservices.git'
+        GIT_REPO = 'https://github.com/WagyuBeefsteak/spring-petclinic-microservices.git'
         NAMESPACE = 'petclinic-dev'
     }
 
